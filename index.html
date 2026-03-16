@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organisme Abstrait</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+    <!-- Panneau d'information -->
+    <div class="info-panel" id="infoPanel">
+        <div class="close-btn" id="toggleBtn"></div>
+        <div class="info-content">
+            <h1>Organisme Abstrait</h1>
+            
+            <p>Cet Organisme Abstrait est une forme de vie digitale autonome, une nébuleuse de filaments qui "respire" au centre de l'écran. Ce projet explore la frontière entre la rigueur mathématique et le désordre organique à travers un phénomène de "Glitch Math" : une erreur volontaire de conversion trigonométrique qui transforme des trajectoires froides en une danse nerveuse et vibrante.</p>
+            
+            <p>L'entité n'est pas un simple décor ; elle réagit à votre présence. La souris devient un corps étranger que l'organisme évite pour protéger son noyau, créant un dialogue tactile entre l'utilisateur et la matière numérique. C'est une métaphore de la résilience : une forme qui peut être perturbée et creusée, mais qui tend toujours à retrouver son équilibre et sa cohésion originelle.</p>
+            
+            <h2>Guide des Interactions</h2>
+            
+            <div class="commands">
+                <div class="command-item">
+                    <div class="command-key">Mouvement de Souris</div>
+                    <div class="command-desc">
+                        <div class="command-action">Perturber</div>
+                        <div class="command-effect">Crée un vide local. Les particules s'écartent pour laisser passer votre curseur.</div>
+                    </div>
+                </div>
+                
+                <div class="command-item">
+                    <div class="command-key">Barre [Espace]</div>
+                    <div class="command-desc">
+                        <div class="command-action">Nourrir</div>
+                        <div class="command-effect">Injecte de nouvelles particules. L'organisme gagne en densité et sa taille augmente.</div>
+                    </div>
+                </div>
+                
+                <div class="command-item">
+                    <div class="command-key">Touche [R]</div>
+                    <div class="command-desc">
+                        <div class="command-action">Régénérer</div>
+                        <div class="command-effect">Réinitialise l'entité. Elle retrouve sa taille de base et son nombre de particules initial.</div>
+                    </div>
+                </div>
+                
+                <div class="command-item">
+                    <div class="command-key">Touche [L]</div>
+                    <div class="command-desc">
+                        <div class="command-action">Liens</div>
+                        <div class="command-effect">Active ou désactive les connexions entre particules proches. Crée un réseau visuel de liens.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Panneau Galerie -->
+    <div class="gallery-panel" id="galleryPanel">
+        <div class="close-btn" id="galleryToggleBtn"></div>
+        <div class="gallery-content">
+            <h1>Galerie</h1>
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openLightbox('assets/photo.png')">
+                    <img src="assets/photo.png" alt="Photo 1">
+                </div>
+                <div class="gallery-item" onclick="openLightbox('assets/video.mov', true)">
+                    <video autoplay loop muted playsinline>
+                        <source src="assets/video.mov" type="video/mp4">
+                    </video>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('assets/photo2.png')">
+                    <img src="assets/photo2.png" alt="Photo 2">
+                </div>
+                <div class="gallery-item" onclick="openLightbox('assets/photo3.png')">
+                    <img src="assets/photo3.png" alt="Photo 3">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-close"></div>
+        <img class="lightbox-content" id="lightboxImg" src="" alt="">
+        <video class="lightbox-content" id="lightboxVideo" style="display:none;" controls>
+            <source src="" type="video/mp4">
+        </video>
+    </div>
+    
+    <main></main>
+    <script src="js/script.js"></script>
+    
+    <script>
+        // Toggle pour le panneau d'information
+        const infoPanel = document.getElementById('infoPanel');
+        const toggleBtn = document.getElementById('toggleBtn');
+        
+        toggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            infoPanel.classList.toggle('minimized');
+        });
+        
+        infoPanel.addEventListener('click', function() {
+            if (infoPanel.classList.contains('minimized')) {
+                infoPanel.classList.remove('minimized');
+            }
+        });
+        
+        // Toggle pour la galerie
+        const galleryPanel = document.getElementById('galleryPanel');
+        const galleryToggleBtn = document.getElementById('galleryToggleBtn');
+        
+        galleryToggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            galleryPanel.classList.toggle('minimized');
+        });
+        
+        galleryPanel.addEventListener('click', function() {
+            if (galleryPanel.classList.contains('minimized')) {
+                galleryPanel.classList.remove('minimized');
+            }
+        });
+        
+        // Lightbox
+        function openLightbox(src, isVideo = false) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxVideo = document.getElementById('lightboxVideo');
+            
+            if (isVideo) {
+                lightboxImg.style.display = 'none';
+                lightboxVideo.style.display = 'block';
+                lightboxVideo.querySelector('source').src = src;
+                lightboxVideo.load();
+            } else {
+                lightboxVideo.style.display = 'none';
+                lightboxImg.style.display = 'block';
+                lightboxImg.src = src;
+            }
+            
+            lightbox.classList.add('active');
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxVideo = document.getElementById('lightboxVideo');
+            lightbox.classList.remove('active');
+            lightboxVideo.pause();
+        }
+    </script>
+</body>
+</html>
